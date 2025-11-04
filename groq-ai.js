@@ -8,10 +8,9 @@ class GroqAI {
 
     async query(messages) {
         try {
-            const response = await fetch(this.apiUrl, {
+            const response = await fetch('/api/groq', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${this.apiKey}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({

@@ -37,28 +37,39 @@ Advanced cryptocurrency trading analyzer with real-time data from Bybit, AI-powe
 
 ## Setup
 
+### Local Development
+
 1. Clone repository:
 ```bash
 git clone https://github.com/ekhwannul/final-bybit.git
 cd final-bybit/bybit-analyzer
 ```
 
-2. Add your Groq API key in `groq-ai.js`:
-```javascript
-this.apiKey = 'YOUR_GROQ_API_KEY';
-```
+2. Open `index.html` in browser
 
-3. Open `index.html` in browser
+### Deploy to Vercel
+
+1. Fork/Clone repository
+2. Import to Vercel
+3. Add environment variable:
+   - Key: `GROQ_API_KEY`
+   - Value: Your Groq API key
+4. Deploy
+
+**Note**: API key akan secure dalam serverless function, tidak exposed di client
 
 ## API Keys
 
 ### Groq AI API
 Get free API key: https://console.groq.com/keys
 
-Replace in `groq-ai.js`:
-```javascript
-this.apiKey = 'gsk_YOUR_API_KEY';
-```
+**For Vercel Deployment:**
+1. Go to Vercel Dashboard → Project Settings → Environment Variables
+2. Add: `GROQ_API_KEY` = your_api_key
+3. Redeploy
+
+**For Local Development:**
+API proxy tidak akan berfungsi locally. Untuk test locally, masukkan API key terus dalam `groq-ai.js` (jangan commit!)
 
 ## Technologies
 
