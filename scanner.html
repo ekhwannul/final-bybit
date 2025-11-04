@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bybit Market Scanner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="scanner-style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-radar"></i>
+                <h1>Market Scanner</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Chart Analyzer
+                </a>
+            </div>
+        </header>
+
+        <div class="scanner-controls">
+            <div class="control-group">
+                <label>Sort By:</label>
+                <select id="sortBy" class="sort-select">
+                    <option value="1m">1 Minit</option>
+                    <option value="5m">5 Minit</option>
+                    <option value="15m">15 Minit</option>
+                    <option value="1h">1 Jam</option>
+                    <option value="2h">2 Jam</option>
+                    <option value="24h">24 Jam</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Filter:</label>
+                <select id="filterBy" class="filter-select">
+                    <option value="all">Semua</option>
+                    <option value="gainers">Gainers</option>
+                    <option value="losers">Losers</option>
+                </select>
+            </div>
+            <div class="control-group ai-search-group">
+                <label>AI Search:</label>
+                <input type="text" id="aiSearch" class="ai-search-input" placeholder="e.g. 'Cari coin yang bullish'">
+            </div>
+            <button id="aiSearchBtn" class="ai-search-btn">
+                <i class="fas fa-brain"></i>
+                Search
+            </button>
+            <button id="refreshBtn" class="refresh-btn">
+                <i class="fas fa-sync-alt"></i>
+                Refresh
+            </button>
+        </div>
+
+        <div class="ai-sentiment-panel" id="aiSentiment" style="display: none;">
+            <div class="sentiment-content">
+                <h3><i class="fas fa-chart-pie"></i> Market Sentiment</h3>
+                <div id="sentimentResult"></div>
+            </div>
+        </div>
+
+        <div class="scanner-table-container">
+            <table class="scanner-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Price</th>
+                        <th class="change-header">1m</th>
+                        <th class="change-header">5m</th>
+                        <th class="change-header">15m</th>
+                        <th class="change-header">1h</th>
+                        <th class="change-header">2h</th>
+                        <th class="change-header">24h</th>
+                        <th>Volume</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="scannerTableBody">
+                    <tr>
+                        <td colspan="10" class="loading-row">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Loading market data...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="bybit-symbols.js"></script>
+    <script src="bybit-api.js"></script>
+    <script src="groq-ai.js"></script>
+    <script src="scanner.js"></script>
+</body>
+</html>

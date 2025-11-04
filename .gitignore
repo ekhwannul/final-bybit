@@ -1,0 +1,13 @@
+# API Keys
+groq-api-key.txt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log

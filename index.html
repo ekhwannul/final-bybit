@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bybit Chart Analyzer Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <h1>Bybit Analyzer Pro</h1>
+            </div>
+            <div class="nav-section">
+                <a href="scanner.html" class="nav-link">
+                    <i class="fas fa-radar"></i>
+                    Market Scanner
+                </a>
+                <div class="status" id="status">
+                    <span class="status-dot"></span>
+                    <span>Live Market Data</span>
+                </div>
+                <div class="status" id="wsStatus" style="margin-left: 15px;">
+                    <span class="status-dot" style="background: #666;"></span>
+                    <span>WebSocket: Off</span>
+                </div>
+                <button class="login-btn" id="loginBtn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="controls-panel">
+                <div class="control-group">
+                    <label for="coinSelect">Pilih Cryptocurrency:</label>
+                    <select id="coinSelect" class="coin-selector">
+                        <option value="">Memuat coin...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="analysis-container">
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <h3 id="chartTitle">Pilih coin untuk mula analisis</h3>
+                        <div class="price-info" id="priceInfo"></div>
+                    </div>
+                    <div class="chart-container" id="chartContainer">
+                        <div class="tradingview-widget-container" style="height:100%;width:100%">
+                            <div id="tradingview_chart" style="height:500px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="trade-simulator-card">
+                        <h3><i class="fas fa-calculator"></i> Trade Simulator (Futures)</h3>
+                        <div class="simulator-controls">
+                            <div class="control-row">
+                                <button class="trade-btn long-btn" id="longBtn">LONG</button>
+                                <button class="trade-btn short-btn" id="shortBtn">SHORT</button>
+                            </div>
+                            <div class="control-row">
+                                <label>Entry Price: <span id="entryPrice">-</span></label>
+                                <label>Current: <span id="currentPrice">-</span></label>
+                            </div>
+                            <div class="control-row">
+                                <label>Capital (USDT):</label>
+                                <input type="number" id="initialCapital" value="1000" step="0.01">
+                            </div>
+                            <div class="control-row">
+                                <label>Position Size (USDT):</label>
+                                <input type="number" id="tradeAmount" value="100" min="1" step="10">
+                            </div>
+                            <div class="control-row">
+                                <label>Leverage: <span id="leverageValue">10x</span></label>
+                                <input type="range" id="leverage" min="1" max="20" value="10" step="1">
+                            </div>
+                        </div>
+                        <div class="simulator-result" id="simulatorResult">
+                            <div class="result-item">
+                                <span>Capital:</span>
+                                <span id="currentCapital" style="font-size: 1.2rem; font-weight: bold;">$1000.00</span>
+                            </div>
+                            <div class="result-item">
+                                <span>Position:</span>
+                                <span id="positionType">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span>PnL:</span>
+                                <span id="pnlValue" style="font-size: 1.5rem; font-weight: bold;">$0.00</span>
+                            </div>
+                            <div class="result-item">
+                                <span>ROI:</span>
+                                <span id="roiValue">0.00%</span>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="close-btn" id="closePosition" style="display:none; flex: 1;">Close Position</button>
+                                <button class="reset-btn" id="resetSimulator">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trade-history-card">
+                        <h3><i class="fas fa-history"></i> Trade History</h3>
+                        <div class="trade-history-items" id="tradeHistoryItems">
+                            <div class="no-history">Tiada trade history</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-panel">
+                    <div class="prediction-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3><i class="fas fa-crystal-ball"></i> Prediction</h3>
+                            <button class="refresh-analysis-btn" id="refreshAnalysisBtn" title="Refresh Analysis">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="prediction-result" id="predictionResult">
+                            <div class="prediction-placeholder">
+                                Pilih coin dan klik "Analisis Chart"
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="patterns-card">
+                        <h3><i class="fas fa-shapes"></i> Candlestick Patterns</h3>
+                        <div class="patterns-list" id="patternsList">
+                            <div class="no-patterns">Tiada pattern dikesan</div>
+                        </div>
+                    </div>
+
+                    <div class="indicators-card">
+                        <h3><i class="fas fa-chart-bar"></i> Technical Indicators</h3>
+                        <div class="indicators-grid" id="indicatorsGrid">
+                            <div class="indicator-item">
+                                <span class="indicator-name">RSI (14):</span>
+                                <span class="indicator-value" id="rsiValue">-</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span class="indicator-name">MACD:</span>
+                                <span class="indicator-value" id="macdValue">-</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span class="indicator-name">EMA 20:</span>
+                                <span class="indicator-value" id="ema20Value">-</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span class="indicator-name">Volume:</span>
+                                <span class="indicator-value" id="volumeValue">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-insights-card">
+                        <h3><i class="fas fa-brain"></i> AI Insights</h3>
+                        <div class="ai-content" id="aiInsights">
+                            <div class="ai-placeholder">
+                                <i class="fas fa-robot"></i>
+                                <p>AI insights akan muncul selepas analisis</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-recommendation-card">
+                        <h3><i class="fas fa-lightbulb"></i> Trading Recommendation</h3>
+                        <div class="ai-content" id="aiRecommendation">
+                            <div class="ai-placeholder">
+                                AI akan berikan cadangan trading
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="watchlist-card">
+                        <h3><i class="fas fa-star"></i> Watchlist</h3>
+                        <button class="add-watchlist-btn" id="addWatchlistBtn">+ Add Current</button>
+                        <div class="watchlist-items" id="watchlistItems">
+                            <div class="no-watchlist">Tiada watchlist</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Menganalisis chart...</p>
+            </div>
+        </div>
+
+        <div class="login-modal" id="loginModal" style="display: none;">
+            <div class="login-content">
+                <h2 id="authTitle">Login</h2>
+                <p style="color: #b8bcc8; margin-bottom: 20px;">Login untuk save watchlist dan trading data</p>
+                <input type="text" id="username" placeholder="Username" class="login-input">
+                <input type="password" id="password" placeholder="Password" class="login-input">
+                <div style="display: flex; gap: 10px;">
+                    <button class="login-submit-btn" id="loginSubmitBtn">Login</button>
+                    <button class="login-submit-btn" id="signupBtn" style="background: #ffd60a; color: #000;">Sign Up</button>
+                    <button class="login-cancel-btn" id="loginCancelBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script src="bybit-symbols.js"></script>
+    <script src="bybit-api.js"></script>
+    <script src="candlestick-patterns.js"></script>
+    <script src="technical-indicators.js"></script>
+    <script src="groq-ai.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
